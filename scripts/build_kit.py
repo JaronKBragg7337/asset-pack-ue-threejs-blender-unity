@@ -246,15 +246,98 @@ def roof_pitched(name, width=M, depth=M, mat="M_Concrete"):
     # standing seams: thin ribs running up each slope. Their bases sit inside
     # the roof solid, so only the raised part shows -- and the union keeps it
     # one watertight manifold.
-    seam, lift = 0.035, 0.05
-    for i in range(1, 6):
-        x = -o + i * (width + 2 * o) / 6.0
+    seam = cfg.ROOF_SEAM_HALF_WIDTH
+    lift = cfg.ROOF_SEAM_LIFT
+    divisions = cfg.ROOF_SEAM_COUNT + 1
+    for i in range(1, divisions):
+        x = -o + i * (width + 2 * o) / divisions
         L.weld_sloped(bm, (x - seam, -o, 0), (x + seam, half, 0),
                       t + lift, rise + t + lift)
         L.weld_sloped(bm, (x - seam, half, 0), (x + seam, depth + o, 0),
                       rise + t + lift, t + lift)
     return L.finish(bm, name, material=MATS[mat],
                     collection=L.get_collection("Roof"))
+
+
+def _roof_junction(name, mode, size=M, mat="M_Concrete"):
+    """Hip/valley heightfield matching the pitched roof on a square module.
+
+    ``mode='hip'`` keeps the lower of two perpendicular gable profiles,
+    producing four outside-corner planes. ``mode='valley'`` keeps the upper
+    profile, producing a cross-gable junction with a trough at each corner.
+    """
+    t = cfg.ROOF_THICKNESS
+    o = cfg.ROOF_OVERHANG
+    rise = cfg.ROOF_RISE
+    lo, hi = -o, size + o
+    half = size / 2.0
+    x_coords = y_coords = (lo, half, hi)
+
+    def gable(value):
+        run = half + o
+        return rise * (1.0 - abs(value - half) / run)
+
+    def top(x, y):
+        across_x = gable(x)
+        across_y = gable(y)
+        if mode == "hip":
+            return t + min(across_x, across_y)
+        return t + max(across_x, across_y)
+
+    bm = bmesh.new()
+    top_verts = {}
+    for ix, x in enumerate(x_coords):
+        for iy, y in enumerate(y_coords):
+            top_verts[ix, iy] = bm.verts.new((x, y, top(x, y)))
+
+    last_x = len(x_coords) - 1
+    last_y = len(y_coords) - 1
+    for ix in range(last_x):
+        for iy in range(last_y):
+            v00 = top_verts[ix, iy]
+            v10 = top_verts[ix + 1, iy]
+            v11 = top_verts[ix + 1, iy + 1]
+            v01 = top_verts[ix, iy + 1]
+            d00 = gable(x_coords[ix]) - gable(y_coords[iy])
+            d10 = gable(x_coords[ix + 1]) - gable(y_coords[iy])
+            d11 = gable(x_coords[ix + 1]) - gable(y_coords[iy + 1])
+            d01 = gable(x_coords[ix]) - gable(y_coords[iy + 1])
+            if d00 * d11 <= 0.0 and d10 * d01 > 0.0:
+                bm.faces.new((v00, v10, v11))
+                bm.faces.new((v00, v11, v01))
+            else:
+                bm.faces.new((v00, v10, v01))
+                bm.faces.new((v10, v11, v01))
+
+    boundary = []
+    boundary.extend((ix, 0) for ix in range(last_x + 1))
+    boundary.extend((last_x, iy) for iy in range(1, last_y + 1))
+    boundary.extend((ix, last_y) for ix in range(last_x - 1, -1, -1))
+    boundary.extend((0, iy) for iy in range(last_y - 1, 0, -1))
+    bottom = [bm.verts.new((x_coords[ix], y_coords[iy], 0.0))
+              for ix, iy in boundary]
+    for index, (ix, iy) in enumerate(boundary):
+        nxt = (index + 1) % len(boundary)
+        nix, niy = boundary[nxt]
+        bm.faces.new((bottom[index], bottom[nxt],
+                      top_verts[nix, niy], top_verts[ix, iy]))
+    bm.faces.new(tuple(reversed(bottom)))
+    bm.normal_update()
+
+    segs = (max(1, cfg.BEVEL_SEGMENTS - 1)
+            if mode == "hip" else cfg.BEVEL_SEGMENTS)
+    return L.finish(bm, name, segs=segs, material=MATS[mat],
+                    collection=L.get_collection("Roof"))
+
+
+def roof_corner(name, size=M, mat="M_Concrete"):
+    """Outside hip corner: four pitched planes meet at the module centre."""
+    return _roof_junction(name, "hip", size, mat)
+
+
+def roof_valley(name, size=M, mat="M_Concrete"):
+    """Inside corner/cross-gable junction with four diagonal roof valleys."""
+    return _roof_junction(name, "valley", size, mat)
 
 
 def roof_ridge(name, length=M, mat="M_PaintedMetal"):
@@ -613,6 +696,8 @@ def define_assets():
         # -- roofs ----------------------------------------------------
         lambda: roof_flat("SM_Roof_Flat_4m"),
         lambda: roof_pitched("SM_Roof_Pitched_4m"),
+        lambda: roof_corner("SM_Roof_Corner_4m"),
+        lambda: roof_valley("SM_Roof_Valley_4m"),
         lambda: roof_ridge("SM_Roof_Ridge_4m"),
         lambda: roof_trim("SM_Roof_Trim_4m"),
         # -- interior -------------------------------------------------

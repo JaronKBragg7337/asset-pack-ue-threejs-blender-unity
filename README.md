@@ -1,8 +1,8 @@
 # ModKit — Modular Building Kit & Prop Pack
 
 [![License: CC0-1.0](https://img.shields.io/badge/License-CC0_1.0-lightgrey.svg)](LICENSE)
-![Assets](https://img.shields.io/badge/assets-36-blue)
-![Triangles](https://img.shields.io/badge/total%20tris-~40.3k-green)
+![Assets](https://img.shields.io/badge/assets-38-blue)
+![Triangles](https://img.shields.io/badge/total%20tris-~40.6k-green)
 ![Formats](https://img.shields.io/badge/formats-FBX%20%7C%20GLB%20%7C%20.blend-orange)
 
 A free, public-domain modular building kit and environment prop set for
@@ -13,7 +13,7 @@ Unreal Engine, Unity, three.js and Blender.
 Spin every piece, toggle wireframe, read the triangle count and real-world
 dimensions. No download, no signup.
 
-![All 36 assets](previews/_ContactSheet_web.png)
+![All 38 assets](previews/_ContactSheet_web.png)
 
 **Everything here is CC0.** Use it commercially, modify it, ship it, sell what
 you make with it. No attribution required, no strings.
@@ -26,8 +26,8 @@ you make with it. No attribution required, no strings.
 corner, **damaged**, **reinforced**), floor and ceiling slabs, pillar, stairs,
 railing, doorframe, parapet.
 
-**Roofs (4)** — flat panel with kerb, pitched gable with standing seams, ridge
-cap, eave fascia + gutter.
+**Roofs (6)** — flat panel with kerb, pitched gable with standing seams, hip
+corner, cross-gable valley, ridge cap, eave fascia + gutter.
 
 **Interior (4)** — I-beam, braced support column, door leaf sized to the
 doorway wall, recessed floor hatch.
@@ -36,7 +36,7 @@ doorway wall, recessed floor hatch.
 barrel plus open and dented variants, pallet, pipe run, wall vent, wall sign,
 rubble pile, debris scatter.
 
-36 meshes, ~40,300 triangles for the entire set. No textures required — the
+38 meshes, ~40,600 triangles for the entire set. No textures required — the
 shading comes from geometry, not maps (see
 [How the shading works](#how-the-shading-works)).
 
