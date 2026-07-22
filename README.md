@@ -1,14 +1,19 @@
 # ModKit — Modular Building Kit & Prop Pack
 
 [![License: CC0-1.0](https://img.shields.io/badge/License-CC0_1.0-lightgrey.svg)](LICENSE)
-![Assets](https://img.shields.io/badge/assets-22-blue)
-![Triangles](https://img.shields.io/badge/total%20tris-~20.7k-green)
+![Assets](https://img.shields.io/badge/assets-36-blue)
+![Triangles](https://img.shields.io/badge/total%20tris-~40.3k-green)
 ![Formats](https://img.shields.io/badge/formats-FBX%20%7C%20GLB%20%7C%20.blend-orange)
 
 A free, public-domain modular building kit and environment prop set for
 Unreal Engine, Unity, three.js and Blender.
 
-![All 22 assets](previews/_ContactSheet_web.png)
+### ▶ [Try it in your browser](https://jaronkbragg7337.github.io/asset-pack-ue-threejs-blender-unity/)
+
+Spin every piece, toggle wireframe, read the triangle count and real-world
+dimensions. No download, no signup.
+
+![All 36 assets](previews/_ContactSheet_web.png)
 
 **Everything here is CC0.** Use it commercially, modify it, ship it, sell what
 you make with it. No attribution required, no strings.
@@ -17,14 +22,21 @@ you make with it. No attribution required, no strings.
 
 ## What's inside
 
-**Modular building kit (13 pieces)** — walls (straight, half, doorway, window,
-arch, corner), floor and ceiling slabs, pillar, stairs, railing, doorframe,
-parapet.
+**Modular building kit (15)** — walls (straight, half, doorway, window, arch,
+corner, **damaged**, **reinforced**), floor and ceiling slabs, pillar, stairs,
+railing, doorframe, parapet.
 
-**Environment props (9 pieces)** — small and large crates, a pre-stacked crate
-cluster, barrel, pallet, pipe run, wall vent, wall sign, rubble pile.
+**Roofs (4)** — flat panel with kerb, pitched gable with standing seams, ridge
+cap, eave fascia + gutter.
 
-22 meshes, ~20,700 triangles for the entire set. No textures required — the
+**Interior (4)** — I-beam, braced support column, door leaf sized to the
+doorway wall, recessed floor hatch.
+
+**Environment props (13)** — small/large/broken crates, pre-stacked cluster,
+barrel plus open and dented variants, pallet, pipe run, wall vent, wall sign,
+rubble pile, debris scatter.
+
+36 meshes, ~40,300 triangles for the entire set. No textures required — the
 shading comes from geometry, not maps (see
 [How the shading works](#how-the-shading-works)).
 
@@ -298,10 +310,10 @@ to `define_assets()`. The library gives you `add_box`, `add_cylinder`, `carve`,
 │   ├── ue_validate.py            Unreal-side audit
 │   └── check_unreal_mcp.py       verifies UE 5.8's MCP server is live
 ├── exports/
-│   ├── FBX_Nanite/               22 single-mesh FBX
-│   ├── FBX_LOD/                  22 LOD-chain FBX
-│   └── GLTF/                     22 GLB
-├── previews/                     22 renders + contact sheets
+│   ├── FBX_Nanite/               36 single-mesh FBX
+│   ├── FBX_LOD/                  36 LOD-chain FBX
+│   └── GLTF/                     36 GLB
+├── previews/                     36 renders + contact sheets
 └── docs/
     ├── asset_manifest.csv        tri and vert counts
     └── ue_validation.txt         audit report
@@ -310,7 +322,7 @@ to `define_assets()`. The library gives you `add_box`, `add_cylinder`, `carve`,
 ## Verification
 
 `docs/ue_validation.txt` is a real audit of the imported pack, not a claim:
-all 22 meshes have Nanite enabled in the Nanite set, all 22 have a 4-level LOD
+all 36 meshes have Nanite enabled in the Nanite set, all 36 have a 4-level LOD
 chain with non-increasing triangle counts in the LOD set, zero problems
 reported.
 

@@ -1,0 +1,2 @@
+Disables Jekyll on GitHub Pages so files and folders beginning with an
+underscore (previews/_ContactSheet.png) are served rather than ignored.

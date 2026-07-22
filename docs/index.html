@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ModKit — free CC0 modular asset pack for UE, Unity, three.js &amp; Blender</title>
+<meta name="description" content="36 procedurally generated public-domain 3D assets. Modular building kit and environment props. FBX, GLB and .blend. No attribution required.">
+<meta property="og:title" content="ModKit — free CC0 modular asset pack">
+<meta property="og:description" content="36 procedurally generated public-domain 3D assets for Unreal, Unity, three.js and Blender.">
+<meta property="og:image" content="https://raw.githubusercontent.com/JaronKBragg7337/asset-pack-ue-threejs-blender-unity/main/previews/_ContactSheet_web.png">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root{
+    --bg:#0d0f12; --panel:#15181d; --line:#252a32;
+    --text:#e6e9ee; --dim:#8b94a3; --accent:#5b9dd9;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;overflow:hidden;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    background:var(--bg);color:var(--text)}
+  #app{display:flex;height:100%}
+  #side{width:270px;flex:0 0 270px;background:var(--panel);
+    border-right:1px solid var(--line);display:flex;flex-direction:column}
+  #stage{flex:1;position:relative;min-width:0}
+  canvas{display:block}
+  h1{font-size:15px;margin:0;letter-spacing:.2px}
+  header{padding:14px 16px;border-bottom:1px solid var(--line)}
+  .sub{font-size:11px;color:var(--dim);margin-top:3px;line-height:1.5}
+  .sub a{color:var(--accent);text-decoration:none}
+  .sub a:hover{text-decoration:underline}
+  #search{margin:10px 12px 6px;padding:7px 9px;font-size:12px;
+    background:#0f1216;border:1px solid var(--line);border-radius:5px;
+    color:var(--text);outline:none}
+  #search:focus{border-color:var(--accent)}
+  #list{flex:1;overflow-y:auto;padding:0 8px 10px}
+  .grp{font-size:10px;text-transform:uppercase;letter-spacing:.9px;
+    color:var(--dim);padding:12px 8px 5px}
+  .item{padding:6px 9px;font-size:12px;border-radius:5px;cursor:pointer;
+    color:#c3cad6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .item:hover{background:#1d222a;color:var(--text)}
+  .item.on{background:var(--accent);color:#fff}
+  footer{padding:10px 14px;border-top:1px solid var(--line);
+    font-size:11px;color:var(--dim);display:flex;gap:14px;flex-wrap:wrap}
+  footer a{color:var(--accent);text-decoration:none}
+  #hud{position:absolute;top:12px;left:14px;font-size:12px;color:var(--dim);
+    pointer-events:none;text-shadow:0 1px 3px #000}
+  #hud b{color:var(--text);font-weight:600}
+  #tools{position:absolute;top:10px;right:12px;display:flex;gap:6px}
+  button{background:var(--panel);border:1px solid var(--line);color:#c3cad6;
+    font-size:11px;padding:6px 11px;border-radius:5px;cursor:pointer}
+  button:hover{border-color:var(--accent);color:var(--text)}
+  button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+  #msg{position:absolute;inset:0;display:flex;align-items:center;
+    justify-content:center;font-size:13px;color:var(--dim);text-align:center;
+    padding:20px;line-height:1.6}
+  @media(max-width:760px){
+    #app{flex-direction:column}
+    #side{width:100%;flex:0 0 42%}
+    #stage{flex:1}
+  }
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="side">
+    <header>
+      <h1>ModKit</h1>
+      <div class="sub">
+        36 procedurally generated CC0 assets ·
+        <a href="https://github.com/JaronKBragg7337/asset-pack-ue-threejs-blender-unity"
+           target="_blank" rel="noopener">source</a>
+      </div>
+    </header>
+    <input id="search" placeholder="Filter assets…" autocomplete="off">
+    <div id="list"></div>
+    <footer>
+      <a href="https://github.com/JaronKBragg7337/asset-pack-ue-threejs-blender-unity/releases/latest"
+         target="_blank" rel="noopener">Download pack</a>
+      <span>Public domain</span>
+    </footer>
+  </div>
+  <div id="stage">
+    <div id="hud"></div>
+    <div id="tools">
+      <button id="btnWire">Wireframe</button>
+      <button id="btnGrid" class="on">Grid</button>
+      <button id="btnSpin" class="on">Spin</button>
+    </div>
+    <div id="msg">Loading…</div>
+  </div>
+</div>
+
+<script type="importmap">
+{ "imports": {
+    "three": "https://unpkg.com/three@0.170.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.170.0/examples/jsm/"
+} }
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFLoader }    from 'three/addons/loaders/GLTFLoader.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+// GLBs live one level up from /docs in the repo.
+const BASE = '../exports/GLTF/';
+
+const GROUPS = {
+  'Walls': ['SM_Wall_Straight_4m','SM_Wall_Half_2m','SM_Wall_Doorway_4m',
+            'SM_Wall_Window_4m','SM_Wall_Arch_4m','SM_Wall_Corner_4m',
+            'SM_Wall_Damaged_4m','SM_Wall_Reinforced_4m'],
+  'Structure': ['SM_Floor_4m','SM_Ceiling_4m','SM_Pillar_3m','SM_Stairs_4m',
+                'SM_Railing_4m','SM_Doorframe','SM_Parapet_4m'],
+  'Roofs': ['SM_Roof_Flat_4m','SM_Roof_Pitched_4m','SM_Roof_Ridge_4m',
+            'SM_Roof_Trim_4m'],
+  'Interior': ['SM_Beam_4m','SM_Support_Column_3m','SM_Door_Panel',
+               'SM_Floor_Hatch'],
+  'Props': ['SM_Crate_Small','SM_Crate_Large','SM_Crate_Stack','SM_Crate_Broken',
+            'SM_Barrel','SM_Barrel_Open','SM_Barrel_Dented','SM_Pallet',
+            'SM_Pipe_2m','SM_Vent_Wall','SM_Sign_Wall','SM_Rubble_Pile',
+            'SM_Debris_Scatter']
+};
+
+const stage = document.getElementById('stage');
+const msg   = document.getElementById('msg');
+const hud   = document.getElementById('hud');
+
+const renderer = new THREE.WebGLRenderer({ antialias:true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 0.95;
+stage.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x0d0f12);
+
+const camera = new THREE.PerspectiveCamera(45, 1, 0.05, 500);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.06;
+
+// Room environment gives believable PBR reflections without shipping an HDRI.
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+
+const key = new THREE.DirectionalLight(0xffffff, 2.1);
+key.position.set(4, 7, 5);
+scene.add(key);
+scene.add(new THREE.HemisphereLight(0x9fb4cc, 0x1a1d22, 0.7));
+
+const grid = new THREE.GridHelper(40, 40, 0x3a4250, 0x1e232b);
+grid.material.transparent = true;
+grid.material.opacity = 0.6;
+scene.add(grid);
+
+const loader = new GLTFLoader();
+let current = null, spin = true, wire = false;
+
+/**
+ * Wrap a loaded model in a pivot centred on its bounding box, and aim the
+ * camera at the origin.
+ *
+ * The centring is not cosmetic: kit pieces have their origin at the grid
+ * corner (that is what makes them snap together in an engine), so spinning
+ * the raw model rotates it about that corner and swings it out of frame.
+ */
+function mount(model) {
+  const box = new THREE.Box3().setFromObject(model);
+  const size = box.getSize(new THREE.Vector3());
+  const mid = box.getCenter(new THREE.Vector3());
+
+  const pivot = new THREE.Group();
+  model.position.sub(mid);          // model centre now sits on pivot origin
+  pivot.add(model);
+
+  // True bounding-sphere radius. Using the largest single dimension instead
+  // crops wide flat pieces like roof panels -- which this kit is full of.
+  const radius = size.length() * 0.5 || 1;
+  const vFov = THREE.MathUtils.degToRad(camera.fov);
+  const hFov = 2 * Math.atan(Math.tan(vFov * 0.5) * camera.aspect);
+  const dist = Math.max(radius / Math.sin(vFov * 0.5),
+                        radius / Math.sin(hFov * 0.5)) * 1.15;
+
+  controls.target.set(0, 0, 0);
+  camera.position.copy(new THREE.Vector3(0.62, 0.46, 0.80)
+    .normalize().multiplyScalar(dist));
+  camera.near = radius / 100;
+  camera.far = radius * 100;
+  camera.updateProjectionMatrix();
+  controls.update();
+
+  grid.position.y = -size.y * 0.5;   // grid sits under the piece
+  return { pivot, size };
+}
+
+function countTris(obj) {
+  let t = 0;
+  obj.traverse(n => {
+    if (!n.isMesh) return;
+    const g = n.geometry;
+    t += g.index ? g.index.count / 3 : g.attributes.position.count / 3;
+  });
+  return Math.round(t);
+}
+
+function load(name) {
+  msg.style.display = 'flex';
+  msg.textContent = 'Loading ' + name + '…';
+  loader.load(BASE + name + '.glb', gltf => {
+    if (current) {
+      scene.remove(current);
+      current.traverse(n => {
+        if (n.isMesh) { n.geometry.dispose(); }
+      });
+    }
+    const model = gltf.scene;
+    model.traverse(n => { if (n.isMesh) n.material.wireframe = wire; });
+    const { pivot, size } = mount(model);
+    current = pivot;
+    scene.add(current);
+    hud.innerHTML = '<b>' + name + '</b><br>' +
+      countTris(current).toLocaleString() + ' tris &nbsp;·&nbsp; ' +
+      size.x.toFixed(2) + ' × ' + size.z.toFixed(2) + ' × ' +
+      size.y.toFixed(2) + ' m';
+    msg.style.display = 'none';
+  }, undefined, () => {
+    msg.textContent = 'Could not load ' + name +
+      '.glb — if you are viewing this file locally, run a web server ' +
+      '(python -m http.server) rather than opening it directly.';
+  });
+}
+
+// ---------------------------------------------------------------- sidebar
+const listEl = document.getElementById('list');
+const items = [];
+
+for (const [group, names] of Object.entries(GROUPS)) {
+  const h = document.createElement('div');
+  h.className = 'grp';
+  h.textContent = group;
+  h.dataset.group = group;
+  listEl.appendChild(h);
+  for (const name of names) {
+    const el = document.createElement('div');
+    el.className = 'item';
+    el.textContent = name.replace(/^SM_/, '').replace(/_/g, ' ');
+    el.dataset.name = name;
+    el.onclick = () => select(name);
+    listEl.appendChild(el);
+    items.push(el);
+  }
+}
+
+function select(name) {
+  items.forEach(el => el.classList.toggle('on', el.dataset.name === name));
+  location.hash = name;
+  load(name);
+}
+
+document.getElementById('search').addEventListener('input', e => {
+  const q = e.target.value.toLowerCase();
+  items.forEach(el => {
+    el.style.display = el.dataset.name.toLowerCase().includes(q) ? '' : 'none';
+  });
+  document.querySelectorAll('.grp').forEach(h => {
+    let next = h.nextElementSibling, any = false;
+    while (next && next.className.startsWith('item')) {
+      if (next.style.display !== 'none') any = true;
+      next = next.nextElementSibling;
+    }
+    h.style.display = any ? '' : 'none';
+  });
+});
+
+document.getElementById('btnWire').onclick = e => {
+  wire = !wire;
+  e.target.classList.toggle('on', wire);
+  if (current) current.traverse(n => {
+    if (n.isMesh) n.material.wireframe = wire;
+  });
+};
+document.getElementById('btnGrid').onclick = e => {
+  grid.visible = !grid.visible;
+  e.target.classList.toggle('on', grid.visible);
+};
+document.getElementById('btnSpin').onclick = e => {
+  spin = !spin;
+  e.target.classList.toggle('on', spin);
+};
+
+// ---------------------------------------------------------------- loop
+function resize() {
+  const w = stage.clientWidth, h = stage.clientHeight;
+  // Must let three.js set the canvas CSS size too. With updateStyle=false the
+  // drawing buffer resizes but the element keeps its default 300x150 CSS box,
+  // and the browser stretches the result off-centre.
+  renderer.setSize(w, h);
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+}
+addEventListener('resize', resize);
+resize();
+
+let last = performance.now();
+renderer.setAnimationLoop(() => {
+  const now = performance.now();
+  const dt = (now - last) / 1000;
+  last = now;
+  if (spin && current) current.rotation.y += dt * 0.35;
+  controls.update();
+  renderer.render(scene, camera);
+});
+
+// deep-linkable: index.html#SM_Barrel opens straight to that asset
+const start = location.hash.slice(1);
+const valid = Object.values(GROUPS).flat();
+select(valid.includes(start) ? start : 'SM_Wall_Doorway_4m');
+</script>
+</body>
+</html>

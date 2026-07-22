@@ -85,6 +85,32 @@ def add_box(bm, p0, p1):
     return faces
 
 
+def add_sloped_box(bm, p0, p1, z_low, z_high, along='Y'):
+    """Box with a sloping top face -- the primitive behind pitched roofs.
+
+    p0/p1 give the footprint and the flat bottom (z from p0[2]). The top face
+    rises linearly from `z_low` to `z_high` across the chosen axis. Topology
+    matches add_box(), so booleans behave identically.
+    """
+    (x0, y0, zb), (x1, y1, _) = p0, p1
+    x0, x1 = min(x0, x1), max(x0, x1)
+    y0, y1 = min(y0, y1), max(y0, y1)
+
+    def top(x, y):
+        t = (y - y0) / (y1 - y0) if along == 'Y' else (x - x0) / (x1 - x0)
+        return z_low + (z_high - z_low) * t
+
+    co = [(x0, y0, zb), (x1, y0, zb), (x1, y1, zb), (x0, y1, zb),
+          (x0, y0, top(x0, y0)), (x1, y0, top(x1, y0)),
+          (x1, y1, top(x1, y1)), (x0, y1, top(x0, y1))]
+    v = [bm.verts.new(c) for c in co]
+    quads = [(0, 3, 2, 1), (4, 5, 6, 7), (0, 1, 5, 4),
+             (2, 3, 7, 6), (1, 2, 6, 5), (3, 0, 4, 7)]
+    faces = [bm.faces.new([v[i] for i in q]) for q in quads]
+    bm.normal_update()
+    return faces
+
+
 def add_cylinder(bm, radius, depth, segments=24, center=(0, 0, 0), axis='Z'):
     res = bmesh.ops.create_cone(
         bm, cap_ends=True, cap_tris=False, segments=segments,
@@ -425,6 +451,20 @@ def bool_bm(bm, cutter, op='DIFFERENCE'):
 def carve_cylinder(bm, radius, depth, segments=24, center=(0, 0, 0), axis='Z'):
     cutter = bmesh.new()
     add_cylinder(cutter, radius, depth, segments, center, axis)
+    bool_bm(bm, cutter, 'DIFFERENCE')
+
+
+def weld_sloped(bm, p0, p1, z_low, z_high, along='Y'):
+    """Boolean UNION a sloped-top box in (roof planes, ramps, wedges)."""
+    cutter = bmesh.new()
+    add_sloped_box(cutter, p0, p1, z_low, z_high, along)
+    bool_bm(bm, cutter, 'UNION')
+
+
+def carve_sloped(bm, p0, p1, z_low, z_high, along='Y'):
+    """Boolean DIFFERENCE a sloped-top box out."""
+    cutter = bmesh.new()
+    add_sloped_box(cutter, p0, p1, z_low, z_high, along)
     bool_bm(bm, cutter, 'DIFFERENCE')
 
 

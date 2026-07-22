@@ -169,6 +169,188 @@ def parapet(name, length=M, height=0.90, mat="M_Concrete"):
                     collection=L.get_collection("Kit"))
 
 
+# ========================================================== WALL VARIANTS
+def wall_damaged(name, width=M, height=WALL_H, seed=11, mat="M_Concrete"):
+    """Blast-damaged wall: ragged breach plus scattered impact pocks."""
+    import random
+    rng = random.Random(seed)
+    bm = bmesh.new()
+    L.add_box(bm, (0, 0, 0), (width, WALL_T, height))
+    _bays(bm, [(RIB, width / 2 - RIB)], RIB, height - RIB)
+
+    # main breach -- overlapping cuts give a ragged edge a single hole can't
+    cx, cz = width * 0.66, height * 0.52
+    for _ in range(9):
+        rx = rng.uniform(0.18, 0.46)
+        rz = rng.uniform(0.18, 0.46)
+        ox = rng.uniform(-0.55, 0.55)
+        oz = rng.uniform(-0.55, 0.55)
+        L.carve(bm, (cx + ox - rx, -0.02, cz + oz - rz),
+                (cx + ox + rx, WALL_T + 0.02, cz + oz + rz))
+    # shallow impact craters that do not punch through
+    for _ in range(7):
+        px = rng.uniform(0.3, width - 0.3)
+        pz = rng.uniform(0.3, height - 0.3)
+        r = rng.uniform(0.06, 0.15)
+        L.carve(bm, (px - r, -0.02, pz - r), (px + r, 0.05, pz + r))
+    return L.finish(bm, name, material=MATS[mat],
+                    collection=L.get_collection("Kit"))
+
+
+def wall_reinforced(name, width=M, height=WALL_H, mat="M_Steel"):
+    """Armour-plated wall: bolted plates over the base slab."""
+    bm = bmesh.new()
+    L.add_box(bm, (0, 0, 0), (width, WALL_T, height))
+    plate = 0.06
+    for (px0, px1) in ((0.10, width / 2 - 0.06), (width / 2 + 0.06, width - 0.10)):
+        L.weld(bm, (px0, -plate, 0.14), (px1, 0.0, height - 0.14))
+        # bolt heads around the plate perimeter
+        for bx in (px0 + 0.10, (px0 + px1) / 2, px1 - 0.10):
+            for bz in (0.26, height / 2, height - 0.26):
+                L.weld(bm, (bx - 0.035, -plate - 0.025, bz - 0.035),
+                       (bx + 0.035, -plate, bz + 0.035))
+    # vertical stiffener down the centre seam
+    L.weld(bm, (width / 2 - 0.07, -0.10, 0), (width / 2 + 0.07, 0.0, height))
+    return L.finish(bm, name, material=MATS[mat],
+                    collection=L.get_collection("Kit"))
+
+
+# ================================================================== ROOFS
+def roof_flat(name, width=M, depth=M, mat="M_Concrete"):
+    """Flat roof panel with a drip lip. Origin at grid corner, sits at z=0."""
+    t = cfg.ROOF_THICKNESS
+    o = cfg.ROOF_OVERHANG
+    bm = bmesh.new()
+    L.add_box(bm, (-o, -o, 0), (width + o, depth + o, t))
+    # raised kerb around the edge so water/silhouette reads
+    L.weld(bm, (-o, -o, t), (width + o, -o + 0.10, t + 0.10))
+    L.weld(bm, (-o, depth + o - 0.10, t), (width + o, depth + o, t + 0.10))
+    L.weld(bm, (-o, -o, t), (-o + 0.10, depth + o, t + 0.10))
+    L.weld(bm, (width + o - 0.10, -o, t), (width + o, depth + o, t + 0.10))
+    L.carve(bm, (0.30, 0.30, t - 0.03), (width - 0.30, depth - 0.30, t + 0.01))
+    return L.finish(bm, name, material=MATS[mat],
+                    collection=L.get_collection("Roof"))
+
+
+def roof_pitched(name, width=M, depth=M, mat="M_Concrete"):
+    """Gable roof section: two planes meeting at a central ridge along X."""
+    t = cfg.ROOF_THICKNESS
+    o = cfg.ROOF_OVERHANG
+    rise = cfg.ROOF_RISE
+    half = depth / 2.0
+    bm = bmesh.new()
+    # near slope rises toward the ridge, far slope falls away from it
+    L.add_sloped_box(bm, (-o, -o, 0), (width + o, half, 0), t, rise + t)
+    L.weld_sloped(bm, (-o, half, 0), (width + o, depth + o, 0),
+                  rise + t, t)
+    # standing seams: thin ribs running up each slope. Their bases sit inside
+    # the roof solid, so only the raised part shows -- and the union keeps it
+    # one watertight manifold.
+    seam, lift = 0.035, 0.05
+    for i in range(1, 6):
+        x = -o + i * (width + 2 * o) / 6.0
+        L.weld_sloped(bm, (x - seam, -o, 0), (x + seam, half, 0),
+                      t + lift, rise + t + lift)
+        L.weld_sloped(bm, (x - seam, half, 0), (x + seam, depth + o, 0),
+                      rise + t + lift, t + lift)
+    return L.finish(bm, name, material=MATS[mat],
+                    collection=L.get_collection("Roof"))
+
+
+def roof_ridge(name, length=M, mat="M_PaintedMetal"):
+    """Capping strip that hides the seam where two pitched roofs meet."""
+    bm = bmesh.new()
+    w = 0.26
+    L.add_sloped_box(bm, (0, -w, 0), (length, 0, 0), 0.14, 0.0)
+    L.weld_sloped(bm, (0, 0, 0), (length, w, 0), 0.0, 0.14)
+    L.weld(bm, (0, -0.04, 0.10), (length, 0.04, 0.17))
+    return L.finish(bm, name, material=MATS[mat],
+                    collection=L.get_collection("Roof"))
+
+
+def roof_trim(name, length=M, mat="M_PaintedMetal"):
+    """Eave fascia + gutter. Origin at grid corner, hangs below roof level."""
+    d = cfg.ROOF_TRIM_DEPTH
+    bm = bmesh.new()
+    L.add_box(bm, (0, 0, -0.24), (length, d * 0.45, 0))          # fascia board
+    L.weld(bm, (0, d * 0.45, -0.22), (length, d, -0.06))         # gutter body
+    L.carve(bm, (0.03, d * 0.5, -0.19), (length - 0.03, d - 0.02, -0.05))
+    for x in (length * 0.2, length * 0.8):                        # brackets
+        L.weld(bm, (x - 0.03, d * 0.4, -0.26), (x + 0.03, d + 0.02, -0.18))
+    return L.finish(bm, name, material=MATS[mat],
+                    collection=L.get_collection("Roof"))
+
+
+# ================================================================ INTERIOR
+def ibeam(name, length=M, h=0.30, mat="M_Steel"):
+    """I-beam spanning one module along X. Origin at grid corner, top at z=0."""
+    fl = 0.035          # flange thickness
+    web = 0.030
+    w = h * 0.55
+    bm = bmesh.new()
+    L.add_box(bm, (0, -w / 2, -h), (length, w / 2, -h + fl))          # bottom
+    L.weld(bm, (0, -w / 2, -fl), (length, w / 2, 0))                  # top
+    L.weld(bm, (0, -web / 2, -h + fl), (length, web / 2, -fl))        # web
+    for x in (0.0, length - 0.05):                                     # end plates
+        L.weld(bm, (x, -w / 2 - 0.02, -h - 0.02),
+               (x + 0.05, w / 2 + 0.02, 0.02))
+    return L.finish(bm, name, material=MATS[mat],
+                    collection=L.get_collection("Interior"))
+
+
+def support_column(name, height=WALL_H, mat="M_Steel"):
+    """Braced I-section column. Origin at base centre."""
+    w, fl, web = 0.22, 0.035, 0.030
+    bm = bmesh.new()
+    L.add_box(bm, (-w, -w * 0.5, 0), (w, -w * 0.5 + fl, height))
+    L.weld(bm, (-w, w * 0.5 - fl, 0), (w, w * 0.5, height))
+    L.weld(bm, (-web / 2, -w * 0.5, 0), (web / 2, w * 0.5, height))
+    for z in (0.0, height - 0.04):                       # base + cap plates
+        L.weld(bm, (-w - 0.06, -w - 0.06, z), (w + 0.06, w + 0.06, z + 0.04))
+    for z in (height * 0.35, height * 0.7):              # collar stiffeners
+        L.weld(bm, (-w - 0.02, -w * 0.5 - 0.02, z),
+               (w + 0.02, w * 0.5 + 0.02, z + 0.05))
+    return L.finish(bm, name, material=MATS[mat],
+                    collection=L.get_collection("Interior"))
+
+
+def door_panel(name, w=None, h=None, mat="M_PaintedMetal"):
+    """Door leaf sized to fit SM_Wall_Doorway_4m. Origin at base centre."""
+    w = (cfg.DOOR_WIDTH - 0.04) if w is None else w
+    h = (cfg.DOOR_HEIGHT - 0.03) if h is None else h
+    t = 0.055
+    bm = bmesh.new()
+    L.add_box(bm, (-w / 2, 0, 0), (w / 2, t, h))
+    inset = 0.10
+    for (z0, z1) in ((inset, h * 0.48), (h * 0.52, h - inset)):
+        L.carve(bm, (-w / 2 + inset, -0.01, z0), (w / 2 - inset, 0.018, z1))
+        L.carve(bm, (-w / 2 + inset, t - 0.018, z0), (w / 2 - inset, t + 0.01, z1))
+    L.weld(bm, (w / 2 - 0.26, -0.05, h * 0.45),
+           (w / 2 - 0.10, 0.0, h * 0.45 + 0.05))          # push bar
+    for z in (h * 0.15, h * 0.5, h * 0.85):                # hinges
+        L.weld(bm, (-w / 2 - 0.02, 0.005, z - 0.06),
+               (-w / 2 + 0.02, t - 0.005, z + 0.06))
+    return L.finish(bm, name, material=MATS[mat],
+                    collection=L.get_collection("Interior"))
+
+
+def floor_hatch(name, size=1.10, mat="M_Steel"):
+    """Recessed floor hatch with a lift ring. Origin at base centre, top z=0."""
+    t = 0.07
+    h = size / 2.0
+    bm = bmesh.new()
+    L.add_box(bm, (-h, -h, -t), (h, h, 0))
+    L.carve(bm, (-h + 0.09, -h + 0.09, -0.02), (h - 0.09, h - 0.09, 0.01))
+    # tread pattern
+    for i in range(4):
+        y = -h + 0.20 + i * (size - 0.40) / 3.0
+        L.weld(bm, (-h + 0.12, y - 0.022, -0.02), (h - 0.12, y + 0.022, 0.005))
+    L.weld(bm, (-0.13, -0.03, -0.03), (0.13, 0.03, 0.02))   # recessed handle
+    L.carve(bm, (-0.10, -0.02, -0.04), (0.10, 0.02, 0.03))
+    return L.finish(bm, name, material=MATS[mat],
+                    collection=L.get_collection("Interior"))
+
+
 # ================================================================== PROPS
 def _put(bm, p0, p1):
     """Add a box, unioning it in if the mesh already has geometry."""
@@ -307,6 +489,89 @@ def rubble(name, size=0.75, chunks=7, seed=3, mat="M_Concrete"):
                     collection=L.get_collection("Props"))
 
 
+def barrel_open(name, radius=0.30, height=0.92, mat="M_RustedIron"):
+    """Lidless barrel -- hollowed so you can see inside. Origin base centre."""
+    bm = bmesh.new()
+    L.add_cylinder(bm, radius, height, segments=32,
+                   center=(0, 0, height / 2.0))
+    for z in (height * 0.22, height * 0.5, height * 0.78):
+        L.add_cylinder(bm, radius * 1.045, 0.06, segments=32, center=(0, 0, z))
+    # hollow the interior; leaving a floor keeps it watertight
+    L.carve_cylinder(bm, radius - 0.035, height, segments=32,
+                     center=(0, 0, height / 2.0 + 0.09))
+    return L.finish(bm, name, material=MATS[mat],
+                    collection=L.get_collection("Props"))
+
+
+def barrel_dented(name, radius=0.30, height=0.92, seed=5,
+                  mat="M_RustedIron"):
+    """Beaten-up barrel: rings intact, body knocked about. Origin base centre."""
+    import random
+    rng = random.Random(seed)
+    bm = bmesh.new()
+    L.add_cylinder(bm, radius, height, segments=32,
+                   center=(0, 0, height / 2.0))
+    for z in (height * 0.22, height * 0.5, height * 0.78):
+        L.add_cylinder(bm, radius * 1.045, 0.06, segments=32, center=(0, 0, z))
+    L.add_cylinder(bm, radius * 0.55, 0.05, segments=24,
+                   center=(0, 0, height - 0.01))
+    # carve shallow dents by subtracting spheres-ish boxes at odd angles
+    for _ in range(6):
+        ang = rng.uniform(0, 6.2832)
+        z = rng.uniform(height * 0.15, height * 0.85)
+        d = rng.uniform(0.07, 0.13)
+        cx = math.cos(ang) * (radius + d * 0.35)
+        cy = math.sin(ang) * (radius + d * 0.35)
+        L.carve(bm, (cx - d, cy - d, z - d), (cx + d, cy + d, z + d))
+    return L.finish(bm, name, material=MATS[mat],
+                    collection=L.get_collection("Props"))
+
+
+def crate_broken(name, size=0.60, seed=7, mat="M_Wood"):
+    """Smashed crate: one corner staved in, planks missing."""
+    import random
+    rng = random.Random(seed)
+    h = size / 2.0
+    frame = size * 0.14
+    bm = bmesh.new()
+    L.add_box(bm, (-h, -h, 0), (h, h, size))
+    inner = h - frame
+    d = 0.035
+    L.carve(bm, (-inner, -h - 0.01, frame), (inner, -h + d, size - frame))
+    L.carve(bm, (-h - 0.01, -inner, frame), (-h + d, inner, size - frame))
+    # blow out the top corner
+    L.carve(bm, (h - size * 0.42, h - size * 0.42, size - size * 0.30),
+            (h + 0.02, h + 0.02, size + 0.02))
+    # rip away random slats
+    for _ in range(5):
+        sx = rng.uniform(-h, h - 0.12)
+        sz = rng.uniform(frame, size - frame)
+        L.carve(bm, (sx, h - d - 0.01, sz),
+                (sx + rng.uniform(0.07, 0.16), h + 0.01,
+                 sz + rng.uniform(0.05, 0.12)))
+    return L.finish(bm, name, material=MATS[mat],
+                    collection=L.get_collection("Props"))
+
+
+def debris_scatter(name, size=1.30, chunks=11, seed=13, mat="M_Concrete"):
+    """Flat scatter of small rubble -- floor dressing, not a pile."""
+    import random
+    rng = random.Random(seed)
+    bm = bmesh.new()
+    for i in range(chunks):
+        sx = size * rng.uniform(0.04, 0.10)
+        sy = size * rng.uniform(0.04, 0.10)
+        sz = size * rng.uniform(0.02, 0.055)
+        cx = rng.uniform(-size * 0.46, size * 0.46)
+        cy = rng.uniform(-size * 0.46, size * 0.46)
+        _put(bm, (cx - sx, cy - sy, 0.0), (cx + sx, cy + sy, sz * 2))
+    L.jitter(bm, size * 0.022, seed=seed)
+    zmin = min(v.co.z for v in bm.verts)
+    bmesh.ops.translate(bm, verts=list(bm.verts), vec=(0, 0, -zmin))
+    return L.finish(bm, name, material=MATS[mat], bevel=0.012,
+                    collection=L.get_collection("Props"))
+
+
 def crate_stack(name, mat="M_Wood"):
     """Three crates pre-stacked -- a one-click set-dressing cluster."""
     bm = bmesh.new()
@@ -342,6 +607,19 @@ def define_assets():
         lambda: railing("SM_Railing_4m"),
         lambda: doorframe("SM_Doorframe"),
         lambda: parapet("SM_Parapet_4m"),
+        # -- wall variants --------------------------------------------
+        lambda: wall_damaged("SM_Wall_Damaged_4m"),
+        lambda: wall_reinforced("SM_Wall_Reinforced_4m"),
+        # -- roofs ----------------------------------------------------
+        lambda: roof_flat("SM_Roof_Flat_4m"),
+        lambda: roof_pitched("SM_Roof_Pitched_4m"),
+        lambda: roof_ridge("SM_Roof_Ridge_4m"),
+        lambda: roof_trim("SM_Roof_Trim_4m"),
+        # -- interior -------------------------------------------------
+        lambda: ibeam("SM_Beam_4m"),
+        lambda: support_column("SM_Support_Column_3m"),
+        lambda: door_panel("SM_Door_Panel"),
+        lambda: floor_hatch("SM_Floor_Hatch"),
         # -- environment props ----------------------------------------
         lambda: crate("SM_Crate_Small", size=0.60),
         lambda: crate("SM_Crate_Large", size=1.00, mat="M_PaintedMetal"),
@@ -352,6 +630,11 @@ def define_assets():
         lambda: vent("SM_Vent_Wall"),
         lambda: sign("SM_Sign_Wall"),
         lambda: rubble("SM_Rubble_Pile"),
+        # -- prop states ----------------------------------------------
+        lambda: barrel_open("SM_Barrel_Open"),
+        lambda: barrel_dented("SM_Barrel_Dented"),
+        lambda: crate_broken("SM_Crate_Broken"),
+        lambda: debris_scatter("SM_Debris_Scatter"),
     ]
 
 

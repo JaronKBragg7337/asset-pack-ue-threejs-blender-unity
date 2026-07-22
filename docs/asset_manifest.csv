@@ -12,6 +12,16 @@ SM_Stairs_4m,1140,572
 SM_Railing_4m,1594,791
 SM_Doorframe,260,132
 SM_Parapet_4m,528,266
+SM_Wall_Damaged_4m,1758,879
+SM_Wall_Reinforced_4m,2850,1427
+SM_Roof_Flat_4m,472,238
+SM_Roof_Pitched_4m,1386,695
+SM_Roof_Ridge_4m,260,130
+SM_Roof_Trim_4m,1132,568
+SM_Beam_4m,680,342
+SM_Support_Column_3m,1900,952
+SM_Door_Panel,1126,562
+SM_Floor_Hatch,1004,504
 SM_Crate_Small,1456,730
 SM_Crate_Large,1456,730
 SM_Crate_Stack,420,212
@@ -21,3 +31,7 @@ SM_Pipe_2m,1136,576
 SM_Vent_Wall,1004,504
 SM_Sign_Wall,620,312
 SM_Rubble_Pile,1212,608
+SM_Barrel_Open,3068,1536
+SM_Barrel_Dented,1432,722
+SM_Crate_Broken,1130,567
+SM_Debris_Scatter,1376,704

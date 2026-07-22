@@ -46,6 +46,12 @@ BAY_INSET = 0.18        # gap between the rib frame and the bay
 GROOVE = 0.05           # floor/ceiling tile groove width
 TILE_DEPTH = 0.04       # how deep the tile grooves cut
 
+# --------------------------------------------------------------- roofs
+ROOF_THICKNESS = 0.18
+ROOF_RISE = 1.30        # height gain from eave to ridge across half a module
+ROOF_OVERHANG = 0.22    # how far the roof projects past the wall below
+ROOF_TRIM_DEPTH = 0.14  # eave / fascia board depth
+
 # --------------------------------------------------------------- UVs
 UV_ANGLE_LIMIT = 66.0   # smart-project seam angle, degrees
 UV_ISLAND_MARGIN = 0.004
