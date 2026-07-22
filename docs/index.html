@@ -37,6 +37,11 @@
     background:#0f1216;border:1px solid var(--line);border-radius:5px;
     color:var(--text);outline:none}
   #search:focus{border-color:var(--accent)}
+  #demoBtn{margin:10px 12px 0;padding:9px 10px;text-align:left;
+    background:#172333;border-color:#2b5374;color:#d9edff}
+  #demoBtn:hover,#demoBtn.on{background:#244f72;border-color:var(--accent);color:#fff}
+  #demoBtn small{display:block;color:#8fb4d3;margin-top:3px;font-size:10px}
+  #demoBtn.on small{color:#c9e6ff}
   #list{flex:1;overflow-y:auto;padding:0 8px 10px}
   .grp{font-size:10px;text-transform:uppercase;letter-spacing:.9px;
     color:var(--dim);padding:12px 8px 5px}
@@ -60,8 +65,9 @@
     padding:20px;line-height:1.6}
   @media(max-width:760px){
     #app{flex-direction:column}
-    #side{width:100%;flex:0 0 42%}
-    #stage{flex:1}
+    #side{width:100%;height:42%;min-height:0;flex:0 0 42%}
+    #list{min-height:0}
+    #stage{height:58%;min-height:0;flex:1}
   }
 </style>
 </head>
@@ -76,11 +82,16 @@
            target="_blank" rel="noopener">source</a>
       </div>
     </header>
+    <button id="demoBtn">View example scene
+      <small>Industrial Outpost · all 38 assets</small>
+    </button>
     <input id="search" placeholder="Filter assets…" autocomplete="off">
     <div id="list"></div>
     <footer>
       <a href="https://github.com/JaronKBragg7337/asset-pack-ue-threejs-blender-unity/releases/latest"
          target="_blank" rel="noopener">Download pack</a>
+      <a href="../examples/industrial_outpost/ModKit_Industrial_Outpost.blend"
+         target="_blank" rel="noopener">Demo .blend</a>
       <span>Public domain</span>
     </footer>
   </div>
@@ -110,6 +121,7 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 // GLBs live one level up from /docs in the repo.
 const BASE = '../exports/GLTF/';
+const DEMO = '../examples/industrial_outpost/ModKit_Industrial_Outpost.glb';
 
 const GROUPS = {
   'Walls': ['SM_Wall_Straight_4m','SM_Wall_Half_2m','SM_Wall_Doorway_4m',
@@ -209,10 +221,10 @@ function countTris(obj) {
   return Math.round(t);
 }
 
-function load(name) {
+function load(name, path = BASE + name + '.glb', isDemo = false) {
   msg.style.display = 'flex';
   msg.textContent = 'Loading ' + name + '…';
-  loader.load(BASE + name + '.glb', gltf => {
+  loader.load(path, gltf => {
     if (current) {
       scene.remove(current);
       current.traverse(n => {
@@ -224,6 +236,8 @@ function load(name) {
     const { pivot, size } = mount(model);
     current = pivot;
     scene.add(current);
+    spin = !isDemo;
+    document.getElementById('btnSpin').classList.toggle('on', spin);
     hud.innerHTML = '<b>' + name + '</b><br>' +
       countTris(current).toLocaleString() + ' tris &nbsp;·&nbsp; ' +
       size.x.toFixed(2) + ' × ' + size.z.toFixed(2) + ' × ' +
@@ -231,13 +245,14 @@ function load(name) {
     msg.style.display = 'none';
   }, undefined, () => {
     msg.textContent = 'Could not load ' + name +
-      '.glb — if you are viewing this file locally, run a web server ' +
+      ' — if you are viewing this file locally, run a web server ' +
       '(python -m http.server) rather than opening it directly.';
   });
 }
 
 // ---------------------------------------------------------------- sidebar
 const listEl = document.getElementById('list');
+const demoBtn = document.getElementById('demoBtn');
 const items = [];
 
 for (const [group, names] of Object.entries(GROUPS)) {
@@ -258,10 +273,20 @@ for (const [group, names] of Object.entries(GROUPS)) {
 }
 
 function select(name) {
+  demoBtn.classList.remove('on');
   items.forEach(el => el.classList.toggle('on', el.dataset.name === name));
   location.hash = name;
   load(name);
 }
+
+function selectDemo() {
+  items.forEach(el => el.classList.remove('on'));
+  demoBtn.classList.add('on');
+  location.hash = 'example';
+  load('Industrial Outpost', DEMO, true);
+}
+
+demoBtn.onclick = selectDemo;
 
 document.getElementById('search').addEventListener('input', e => {
   const q = e.target.value.toLowerCase();
@@ -320,7 +345,8 @@ renderer.setAnimationLoop(() => {
 // deep-linkable: index.html#SM_Barrel opens straight to that asset
 const start = location.hash.slice(1);
 const valid = Object.values(GROUPS).flat();
-select(valid.includes(start) ? start : 'SM_Wall_Doorway_4m');
+if (start === 'example') selectDemo();
+else select(valid.includes(start) ? start : 'SM_Wall_Doorway_4m');
 </script>
 </body>
 </html>

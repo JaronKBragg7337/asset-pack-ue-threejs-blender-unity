@@ -10,6 +10,14 @@
 
 Both new meshes are procedurally generated, watertight manifolds with grid-corner pivots and complete FBX, LOD FBX, GLB, Blender and preview outputs. All 36 existing asset triangle counts remain unchanged.
 
+## Industrial Outpost example scene
+
+The release now includes a separate **70-instance Industrial Outpost** demo
+built entirely from all 38 ModKit assets. Explore it in the
+[live viewer](https://jaronkbragg7337.github.io/asset-pack-ue-threejs-blender-unity/docs/#example)
+or download `ModKit-v1.2-Industrial-Outpost.zip` for Blender, GLB, FBX and the
+complete transform manifest.
+
 ## Download
 
 **`ModKit-v1.2.zip`** below contains the complete pack — no clone or build step required.

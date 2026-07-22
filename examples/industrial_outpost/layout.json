@@ -1,0 +1,1391 @@
+{
+  "name": "ModKit Industrial Outpost",
+  "generator": "scripts/build_demo_scene.py",
+  "units": "metres",
+  "grid_module": 4.0,
+  "instance_count": 70,
+  "unique_assets": [
+    "SM_Barrel",
+    "SM_Barrel_Dented",
+    "SM_Barrel_Open",
+    "SM_Beam_4m",
+    "SM_Ceiling_4m",
+    "SM_Crate_Broken",
+    "SM_Crate_Large",
+    "SM_Crate_Small",
+    "SM_Crate_Stack",
+    "SM_Debris_Scatter",
+    "SM_Door_Panel",
+    "SM_Doorframe",
+    "SM_Floor_4m",
+    "SM_Floor_Hatch",
+    "SM_Pallet",
+    "SM_Parapet_4m",
+    "SM_Pillar_3m",
+    "SM_Pipe_2m",
+    "SM_Railing_4m",
+    "SM_Roof_Corner_4m",
+    "SM_Roof_Flat_4m",
+    "SM_Roof_Pitched_4m",
+    "SM_Roof_Ridge_4m",
+    "SM_Roof_Trim_4m",
+    "SM_Roof_Valley_4m",
+    "SM_Rubble_Pile",
+    "SM_Sign_Wall",
+    "SM_Stairs_4m",
+    "SM_Support_Column_3m",
+    "SM_Vent_Wall",
+    "SM_Wall_Arch_4m",
+    "SM_Wall_Corner_4m",
+    "SM_Wall_Damaged_4m",
+    "SM_Wall_Doorway_4m",
+    "SM_Wall_Half_2m",
+    "SM_Wall_Reinforced_4m",
+    "SM_Wall_Straight_4m",
+    "SM_Wall_Window_4m"
+  ],
+  "bounds_metres": {
+    "min": [
+      -4.0,
+      -4.0,
+      -0.2
+    ],
+    "max": [
+      20.0,
+      16.0,
+      4.65
+    ]
+  },
+  "instances": [
+    {
+      "name": "SM_Floor_4m_01",
+      "asset": "SM_Floor_4m",
+      "location": [
+        -4.0,
+        -4.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Floor_4m_02",
+      "asset": "SM_Floor_4m",
+      "location": [
+        -4.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Floor_4m_03",
+      "asset": "SM_Floor_4m",
+      "location": [
+        -4.0,
+        4.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Floor_4m_04",
+      "asset": "SM_Floor_4m",
+      "location": [
+        -4.0,
+        8.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Floor_4m_05",
+      "asset": "SM_Floor_4m",
+      "location": [
+        -4.0,
+        12.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Floor_4m_06",
+      "asset": "SM_Floor_4m",
+      "location": [
+        0.0,
+        -4.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Floor_4m_07",
+      "asset": "SM_Floor_4m",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Floor_4m_08",
+      "asset": "SM_Floor_4m",
+      "location": [
+        0.0,
+        4.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Floor_4m_09",
+      "asset": "SM_Floor_4m",
+      "location": [
+        0.0,
+        8.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Floor_4m_10",
+      "asset": "SM_Floor_4m",
+      "location": [
+        0.0,
+        12.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Floor_4m_11",
+      "asset": "SM_Floor_4m",
+      "location": [
+        4.0,
+        -4.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Floor_4m_12",
+      "asset": "SM_Floor_4m",
+      "location": [
+        4.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Floor_4m_13",
+      "asset": "SM_Floor_4m",
+      "location": [
+        4.0,
+        4.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Floor_4m_14",
+      "asset": "SM_Floor_4m",
+      "location": [
+        4.0,
+        8.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Floor_4m_15",
+      "asset": "SM_Floor_4m",
+      "location": [
+        4.0,
+        12.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Floor_4m_16",
+      "asset": "SM_Floor_4m",
+      "location": [
+        8.0,
+        -4.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Floor_4m_17",
+      "asset": "SM_Floor_4m",
+      "location": [
+        8.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Floor_4m_18",
+      "asset": "SM_Floor_4m",
+      "location": [
+        8.0,
+        4.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Floor_4m_19",
+      "asset": "SM_Floor_4m",
+      "location": [
+        8.0,
+        8.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Floor_4m_20",
+      "asset": "SM_Floor_4m",
+      "location": [
+        8.0,
+        12.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Floor_4m_21",
+      "asset": "SM_Floor_4m",
+      "location": [
+        12.0,
+        -4.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Floor_4m_22",
+      "asset": "SM_Floor_4m",
+      "location": [
+        12.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Floor_4m_23",
+      "asset": "SM_Floor_4m",
+      "location": [
+        12.0,
+        4.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Floor_4m_24",
+      "asset": "SM_Floor_4m",
+      "location": [
+        12.0,
+        8.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Floor_4m_25",
+      "asset": "SM_Floor_4m",
+      "location": [
+        12.0,
+        12.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Floor_4m_26",
+      "asset": "SM_Floor_4m",
+      "location": [
+        16.0,
+        -4.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Floor_4m_27",
+      "asset": "SM_Floor_4m",
+      "location": [
+        16.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Floor_4m_28",
+      "asset": "SM_Floor_4m",
+      "location": [
+        16.0,
+        4.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Floor_4m_29",
+      "asset": "SM_Floor_4m",
+      "location": [
+        16.0,
+        8.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Floor_4m_30",
+      "asset": "SM_Floor_4m",
+      "location": [
+        16.0,
+        12.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Wall_Doorway_4m_01",
+      "asset": "SM_Wall_Doorway_4m",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Wall_Window_4m_01",
+      "asset": "SM_Wall_Window_4m",
+      "location": [
+        4.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Wall_Damaged_4m_01",
+      "asset": "SM_Wall_Damaged_4m",
+      "location": [
+        8.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Wall_Straight_4m_01",
+      "asset": "SM_Wall_Straight_4m",
+      "location": [
+        4.0,
+        8.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        180.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Wall_Reinforced_4m_01",
+      "asset": "SM_Wall_Reinforced_4m",
+      "location": [
+        8.0,
+        8.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        180.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Wall_Arch_4m_01",
+      "asset": "SM_Wall_Arch_4m",
+      "location": [
+        12.0,
+        8.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        180.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Wall_Corner_4m_01",
+      "asset": "SM_Wall_Corner_4m",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        90.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Wall_Half_2m_01",
+      "asset": "SM_Wall_Half_2m",
+      "location": [
+        0.0,
+        4.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        90.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Wall_Window_4m_02",
+      "asset": "SM_Wall_Window_4m",
+      "location": [
+        12.0,
+        4.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        -90.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Wall_Straight_4m_02",
+      "asset": "SM_Wall_Straight_4m",
+      "location": [
+        12.0,
+        8.0,
+        0.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        -90.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Roof_Pitched_4m_01",
+      "asset": "SM_Roof_Pitched_4m",
+      "location": [
+        0.0,
+        0.0,
+        3.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Roof_Valley_4m_01",
+      "asset": "SM_Roof_Valley_4m",
+      "location": [
+        4.0,
+        0.0,
+        3.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Roof_Pitched_4m_02",
+      "asset": "SM_Roof_Pitched_4m",
+      "location": [
+        8.0,
+        0.0,
+        3.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Roof_Corner_4m_01",
+      "asset": "SM_Roof_Corner_4m",
+      "location": [
+        0.0,
+        4.0,
+        3.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Roof_Flat_4m_01",
+      "asset": "SM_Roof_Flat_4m",
+      "location": [
+        4.0,
+        4.0,
+        3.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Ceiling_4m_01",
+      "asset": "SM_Ceiling_4m",
+      "location": [
+        8.0,
+        4.0,
+        3.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Roof_Ridge_4m_01",
+      "asset": "SM_Roof_Ridge_4m",
+      "location": [
+        0.0,
+        1.74,
+        4.48
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Roof_Trim_4m_01",
+      "asset": "SM_Roof_Trim_4m",
+      "location": [
+        8.0,
+        -0.22,
+        3.0
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Parapet_4m_01",
+      "asset": "SM_Parapet_4m",
+      "location": [
+        4.0,
+        8.0,
+        3.2
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Railing_4m_01",
+      "asset": "SM_Railing_4m",
+      "location": [
+        8.0,
+        8.0,
+        3.2
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Stairs_4m_01",
+      "asset": "SM_Stairs_4m",
+      "location": [
+        5.0,
+        2.4,
+        0.2
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Pillar_3m_01",
+      "asset": "SM_Pillar_3m",
+      "location": [
+        0.72,
+        7.12,
+        0.2
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Support_Column_3m_01",
+      "asset": "SM_Support_Column_3m",
+      "location": [
+        10.88,
+        6.96,
+        0.2
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Beam_4m_01",
+      "asset": "SM_Beam_4m",
+      "location": [
+        4.0,
+        7.52,
+        2.66
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Doorframe_01",
+      "asset": "SM_Doorframe",
+      "location": [
+        1.4,
+        -0.2,
+        0.2
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Door_Panel_01",
+      "asset": "SM_Door_Panel",
+      "location": [
+        2.0,
+        -0.32,
+        0.2
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        -28.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Floor_Hatch_01",
+      "asset": "SM_Floor_Hatch",
+      "location": [
+        8.48,
+        4.6,
+        0.23
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Sign_Wall_01",
+      "asset": "SM_Sign_Wall",
+      "location": [
+        6.2,
+        -0.2,
+        1.65
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Vent_Wall_01",
+      "asset": "SM_Vent_Wall",
+      "location": [
+        10.2,
+        -0.2,
+        1.74
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Pipe_2m_01",
+      "asset": "SM_Pipe_2m",
+      "location": [
+        12.2,
+        5.8,
+        1.65
+      ],
+      "rotation_degrees": [
+        0.0,
+        90.0,
+        90.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Pallet_01",
+      "asset": "SM_Pallet",
+      "location": [
+        -1.4,
+        -2.32,
+        0.22
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        -12.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Crate_Large_01",
+      "asset": "SM_Crate_Large",
+      "location": [
+        -1.28,
+        -2.2,
+        0.35
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        8.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Crate_Small_01",
+      "asset": "SM_Crate_Small",
+      "location": [
+        -0.32,
+        -2.48,
+        0.35
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        -18.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Crate_Stack_01",
+      "asset": "SM_Crate_Stack",
+      "location": [
+        14.32,
+        -2.32,
+        0.25
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        20.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Crate_Broken_01",
+      "asset": "SM_Crate_Broken",
+      "location": [
+        13.2,
+        -3.12,
+        0.25
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        -30.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Barrel_01",
+      "asset": "SM_Barrel",
+      "location": [
+        11.28,
+        -2.64,
+        0.25
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Barrel_Open_01",
+      "asset": "SM_Barrel_Open",
+      "location": [
+        12.16,
+        -2.8,
+        0.25
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        12.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Barrel_Dented_01",
+      "asset": "SM_Barrel_Dented",
+      "location": [
+        12.88,
+        -1.92,
+        0.25
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        -15.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Rubble_Pile_01",
+      "asset": "SM_Rubble_Pile",
+      "location": [
+        14.64,
+        9.8,
+        0.25
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        18.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "name": "SM_Debris_Scatter_01",
+      "asset": "SM_Debris_Scatter",
+      "location": [
+        13.28,
+        10.88,
+        0.24
+      ],
+      "rotation_degrees": [
+        0.0,
+        0.0,
+        -24.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    }
+  ]
+}
