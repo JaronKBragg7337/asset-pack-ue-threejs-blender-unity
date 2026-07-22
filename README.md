@@ -159,6 +159,72 @@ highlight edges unbroken and the triangle count honest.
 
 ---
 
+## Driving this pack with an AI agent (MCP)
+
+Both halves of this pipeline now have first-party AI integrations. Neither is
+required to use the pack — but if you're extending it, they remove most of the
+scripting boilerplate.
+
+### Unreal Engine 5.8+ — official MCP server
+
+Epic shipped an experimental MCP server **inside the editor process** in UE 5.8
+(June 2026). The plugin's identifier is `ModelContextProtocol`; it surfaces as
+**Unreal MCP** in the Plugin Browser.
+
+The `ModKitDemo` project in this repo's sibling setup ships with it pre-enabled.
+For your own project:
+
+1. **Edit > Plugins**, search **Unreal MCP**, enable it. (It pulls in **Toolset
+   Registry** automatically.) Restart the editor.
+2. **Edit > Editor Preferences > General > Model Context Protocol** → tick
+   **Auto Start Server**. It binds to `http://127.0.0.1:8000/mcp`.
+3. Generate a client config from the editor console:
+   ```
+   ModelContextProtocol.GenerateClientConfig ClaudeCode
+   ```
+   Supported clients: `ClaudeCode`, `Cursor`, `VSCode`, `Gemini`, `Codex`, `All`.
+   This writes `.mcp.json` to the project root.
+4. Launch your agent **from the project root** so it finds `.mcp.json`.
+
+Verify it's actually serving:
+
+```bash
+python scripts/check_unreal_mcp.py
+```
+
+> Run that from a **normal terminal**, not Unreal's Python console. Unreal ticks
+> the MCP server on the game thread, so a request issued from inside the editor
+> process deadlocks against itself. This cost me a confusing timeout — hence the
+> standalone script.
+
+**Caveats, straight from Epic:** it's Experimental, loopback-only, and has **no
+authentication layer** — don't expose it beyond your machine. Tool calls run
+serially on the game thread, so clients must not issue overlapping calls.
+
+### Blender — official Anthropic connector
+
+Anthropic and the Blender Foundation shipped an official Blender connector in
+April 2026 (Anthropic also funded Blender's Python API work). It needs Blender
+4.2+ and is enabled through **Claude's connector settings**, not installed from
+this repo.
+
+Because it's built on MCP, it works with other MCP-capable clients too — not
+just Claude.
+
+### Which to use for what
+
+| Task | Best route |
+|---|---|
+| Generating/altering the meshes | `scripts/build_kit.py` (deterministic, reproducible) |
+| Exploring or debugging a scene | Blender connector |
+| Importing, LODs, materials | `scripts/ue_*.py` (headless, no editor needed) |
+| Level layout, lighting, iterating in-editor | Unreal MCP |
+
+The scripts remain the reproducible path — an agent is great for exploration,
+but `build_kit.py` regenerates this pack byte-for-byte every time.
+
+---
+
 ## Re-rolling the pack
 
 Everything is driven by constants at the top of `scripts/modkit_lib.py`:
@@ -216,7 +282,8 @@ to `define_assets()`. The library gives you `add_box`, `add_cylinder`, `carve`,
 │   ├── make_sheet.py             composites the contact sheet
 │   ├── ue_import.py              Unreal import + materials
 │   ├── ue_lods.py                Unreal LOD chain assembly
-│   └── ue_validate.py            Unreal-side audit
+│   ├── ue_validate.py            Unreal-side audit
+│   └── check_unreal_mcp.py       verifies UE 5.8's MCP server is live
 ├── exports/
 │   ├── FBX_Nanite/               22 single-mesh FBX
 │   ├── FBX_LOD/                  22 LOD-chain FBX
