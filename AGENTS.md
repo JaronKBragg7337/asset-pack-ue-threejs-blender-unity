@@ -147,17 +147,28 @@ diff /tmp/before.csv docs/asset_manifest.csv
 
 ## Roadmap — good next contributions
 
+Done in v1.1: roofs, damaged/reinforced walls, interior pieces, prop states,
+and the three.js viewer on GitHub Pages.
+
 Ordered roughly by value:
 
-1. **Roofs + roof trims** — flat, pitched, corner, ridge cap, gutter.
-2. **Wall variants** — damaged, reinforced, boarded, pipework-clad.
-3. **Interior pieces** — beams, supports, door variants, floor hatches.
-4. **Prop states** — barrels open/dented/rusted, crates broken, more debris.
-5. **Vertex colours or a proper master material** in the .blend for better
+1. **Roof corner + valley pieces** — the roof set covers flat, pitched, ridge
+   and eave, but has no corner or valley, so L-shaped buildings can't be
+   roofed cleanly. Highest-value gap right now.
+2. **More wall variants** — boarded-up, pipework-clad, half-height with
+   railing, windowed double-height.
+3. **Example scenes** — one small demo level per engine showing how pieces fit
+   together. A `build_demo_scene.py` that assembles a building from the kit
+   inside Blender would serve all three engines at once.
+4. **Vertex colours or a proper master material** in the .blend for better
    default shading (currently flat placeholder PBR).
-6. **Example scenes** — one small demo level per engine showing how pieces fit.
-7. **three.js web demo** — deploy to **GitHub Pages from this repo**
-   (`/docs` folder or a `gh-pages` branch). Load the GLBs from `exports/GLTF/`.
+5. **Stair variants** — spiral, half-landing, open-tread industrial.
+6. **A `--preset` CLI flag** for `build_kit.py` so the chunky/fine/compact
+   presets can be built without editing `kit_config.py`.
+
+If you add a roof corner, match `SM_Roof_Pitched_4m`: same `ROOF_RISE`, same
+standing-seam spacing, same overhang. Mismatched roof pitch is immediately
+obvious in a level.
 
 Keep the 4 m grid and the pivot conventions for anything modular. A roof that
 doesn't line up with a 4 m wall is worse than no roof.
