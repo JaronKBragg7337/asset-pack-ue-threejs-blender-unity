@@ -51,6 +51,9 @@ ROOF_THICKNESS = 0.18
 ROOF_RISE = 1.30        # height gain from eave to ridge across half a module
 ROOF_OVERHANG = 0.22    # how far the roof projects past the wall below
 ROOF_TRIM_DEPTH = 0.14  # eave / fascia board depth
+ROOF_SEAM_HALF_WIDTH = 0.035  # half-width of standing-seam roof ribs
+ROOF_SEAM_LIFT = 0.05         # height of standing seams above the roof skin
+ROOF_SEAM_COUNT = 5           # ribs distributed evenly across a roof span
 
 # --------------------------------------------------------------- UVs
 UV_ANGLE_LIMIT = 66.0   # smart-project seam angle, degrees
@@ -148,4 +151,8 @@ def validate():
     if BEVEL_WIDTH * 2 >= min(RIB_WIDTH, WALL_THICKNESS):
         problems.append("BEVEL_WIDTH (%.3f) too large for RIB_WIDTH/thickness"
                         % BEVEL_WIDTH)
+    if ROOF_SEAM_HALF_WIDTH * 2 >= MODULE / (ROOF_SEAM_COUNT + 1):
+        problems.append("roof seams are too wide for their spacing")
+    if ROOF_SEAM_LIFT >= ROOF_THICKNESS:
+        problems.append("ROOF_SEAM_LIFT must be below ROOF_THICKNESS")
     return problems

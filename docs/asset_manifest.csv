@@ -16,6 +16,8 @@ SM_Wall_Damaged_4m,1758,879
 SM_Wall_Reinforced_4m,2850,1427
 SM_Roof_Flat_4m,472,238
 SM_Roof_Pitched_4m,1386,695
+SM_Roof_Corner_4m,92,48
+SM_Roof_Valley_4m,238,121
 SM_Roof_Ridge_4m,260,130
 SM_Roof_Trim_4m,1132,568
 SM_Beam_4m,680,342
