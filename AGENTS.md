@@ -148,22 +148,20 @@ diff /tmp/before.csv docs/asset_manifest.csv
 ## Roadmap — good next contributions
 
 Done in v1.1: roofs, damaged/reinforced walls, interior pieces, prop states,
-and the three.js viewer on GitHub Pages.
+and the three.js viewer on GitHub Pages. Done in v1.2: roof corner and valley
+junctions for L- and T-shaped buildings.
 
 Ordered roughly by value:
 
-1. **Roof corner + valley pieces** — the roof set covers flat, pitched, ridge
-   and eave, but has no corner or valley, so L-shaped buildings can't be
-   roofed cleanly. Highest-value gap right now.
-2. **More wall variants** — boarded-up, pipework-clad, half-height with
+1. **More wall variants** — boarded-up, pipework-clad, half-height with
    railing, windowed double-height.
-3. **Example scenes** — one small demo level per engine showing how pieces fit
+2. **Example scenes** — one small demo level per engine showing how pieces fit
    together. A `build_demo_scene.py` that assembles a building from the kit
    inside Blender would serve all three engines at once.
-4. **Vertex colours or a proper master material** in the .blend for better
+3. **Vertex colours or a proper master material** in the .blend for better
    default shading (currently flat placeholder PBR).
-5. **Stair variants** — spiral, half-landing, open-tread industrial.
-6. **A `--preset` CLI flag** for `build_kit.py` so the chunky/fine/compact
+4. **Stair variants** — spiral, half-landing, open-tread industrial.
+5. **A `--preset` CLI flag** for `build_kit.py` so the chunky/fine/compact
    presets can be built without editing `kit_config.py`.
 
 If you add a roof corner, match `SM_Roof_Pitched_4m`: same `ROOF_RISE`, same

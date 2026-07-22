@@ -10,8 +10,10 @@ Unreal Engine, Unity, three.js and Blender.
 
 ### ▶ [Try it in your browser](https://jaronkbragg7337.github.io/asset-pack-ue-threejs-blender-unity/)
 
+### ⬇ [Download ModKit v1.2](https://github.com/JaronKBragg7337/asset-pack-ue-threejs-blender-unity/releases/latest)
+
 Spin every piece, toggle wireframe, read the triangle count and real-world
-dimensions. No download, no signup.
+dimensions. The complete FBX, GLB and Blender pack is one ZIP. No signup.
 
 ![All 38 assets](previews/_ContactSheet_web.png)
 
@@ -310,10 +312,10 @@ to `define_assets()`. The library gives you `add_box`, `add_cylinder`, `carve`,
 │   ├── ue_validate.py            Unreal-side audit
 │   └── check_unreal_mcp.py       verifies UE 5.8's MCP server is live
 ├── exports/
-│   ├── FBX_Nanite/               36 single-mesh FBX
-│   ├── FBX_LOD/                  36 LOD-chain FBX
-│   └── GLTF/                     36 GLB
-├── previews/                     36 renders + contact sheets
+│   ├── FBX_Nanite/               38 single-mesh FBX
+│   ├── FBX_LOD/                  38 LOD-chain FBX
+│   └── GLTF/                     38 GLB
+├── previews/                     38 renders + contact sheets
 └── docs/
     ├── asset_manifest.csv        tri and vert counts
     └── ue_validation.txt         audit report
@@ -322,7 +324,7 @@ to `define_assets()`. The library gives you `add_box`, `add_cylinder`, `carve`,
 ## Verification
 
 `docs/ue_validation.txt` is a real audit of the imported pack, not a claim:
-all 36 meshes have Nanite enabled in the Nanite set, all 36 have a 4-level LOD
+all 38 meshes have Nanite enabled in the Nanite set, all 38 have a 4-level LOD
 chain with non-increasing triangle counts in the LOD set, zero problems
 reported.
 
@@ -335,8 +337,8 @@ line in `define_assets()`.
 * Humans: [`CONTRIBUTING.md`](CONTRIBUTING.md)
 * AI agents (Codex, Claude Code, Cursor): [`AGENTS.md`](AGENTS.md)
 
-Wanted most: roofs and roof trims, damaged/reinforced wall variants, interior
-pieces, more prop states, and small example scenes per engine.
+Wanted most: more wall variants, small example scenes per engine, richer
+materials, stair variants, and a command-line preset selector.
 
 ## License
 

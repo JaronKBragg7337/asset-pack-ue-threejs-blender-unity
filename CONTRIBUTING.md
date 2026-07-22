@@ -86,8 +86,8 @@ Screenshots or a preview render in the PR are very welcome.
 
 ## Ideas that would help most
 
-Roofs and roof trims, damaged/reinforced wall variants, interior pieces
-(beams, supports, door variants), more prop states, and small example scenes
-per engine. See the roadmap in [`AGENTS.md`](AGENTS.md) for detail.
+More wall variants, small example scenes per engine, richer materials, stair
+variants, and build-preset tooling. See the roadmap in [`AGENTS.md`](AGENTS.md)
+for detail.
 
 Questions are fine — open an issue.

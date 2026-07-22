@@ -12,6 +12,7 @@ import bpy
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 PREV = os.path.join(ROOT, "previews")
 COLS = 6
+WEB_WIDTH = 1600
 
 
 def load(path):
@@ -44,7 +45,12 @@ def main():
     out.filepath_raw = os.path.join(PREV, "_ContactSheet.png")
     out.file_format = 'PNG'
     out.save()
-    print("SHEET %d tiles -> %dx%d" % (len(tiles), COLS * tw, rows * th))
+    web_height = round(WEB_WIDTH * rows / COLS)
+    out.scale(WEB_WIDTH, web_height)
+    out.filepath_raw = os.path.join(PREV, "_ContactSheet_web.png")
+    out.save()
+    print("SHEET %d tiles -> %dx%d, web %dx%d"
+          % (len(tiles), COLS * tw, rows * th, WEB_WIDTH, web_height))
 
 
 if __name__ == "__main__":

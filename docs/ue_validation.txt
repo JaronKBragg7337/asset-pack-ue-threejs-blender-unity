@@ -19,10 +19,12 @@ SM_Parapet_4m                 308     0     1 True
 SM_Pillar_3m                  698     0     1 True
 SM_Pipe_2m                    506     0     1 True
 SM_Railing_4m                 256     0     1 True
+SM_Roof_Corner_4m              92     0     1 True
 SM_Roof_Flat_4m               252     0     1 True
 SM_Roof_Pitched_4m            256     0     1 True
 SM_Roof_Ridge_4m              256     0     1 True
 SM_Roof_Trim_4m               256     0     1 True
+SM_Roof_Valley_4m             238     0     1 True
 SM_Rubble_Pile                732     0     1 True
 SM_Sign_Wall                  374     0     1 True
 SM_Stairs_4m                  252     0     1 True
@@ -58,10 +60,12 @@ SM_Parapet_4m                4 [528, 264, 132, 66]
 SM_Pillar_3m                 4 [892, 446, 222, 112]
 SM_Pipe_2m                   4 [1136, 568, 284, 142]
 SM_Railing_4m                4 [1594, 796, 398, 200]
+SM_Roof_Corner_4m            4 [92, 64, 64, 64]
 SM_Roof_Flat_4m              4 [472, 236, 118, 64]
 SM_Roof_Pitched_4m           4 [1386, 692, 346, 174]
 SM_Roof_Ridge_4m             4 [260, 130, 64, 64]
 SM_Roof_Trim_4m              4 [1108, 554, 276, 138]
+SM_Roof_Valley_4m            4 [238, 118, 64, 64]
 SM_Rubble_Pile               4 [1212, 606, 302, 152]
 SM_Sign_Wall                 4 [596, 298, 148, 74]
 SM_Stairs_4m                 4 [1140, 570, 284, 142]
