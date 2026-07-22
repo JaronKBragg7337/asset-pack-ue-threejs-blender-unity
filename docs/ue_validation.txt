@@ -1,0 +1,52 @@
+== NANITE SET (/Game/ModKit/Meshes) ==
+asset                        tris    uv  coll nanite
+SM_Barrel                     980     0     1 True
+SM_Ceiling_4m                 236     0     1 True
+SM_Crate_Large                754     0     1 True
+SM_Crate_Small                646     0     1 True
+SM_Crate_Stack                306     0     1 True
+SM_Doorframe                  256     0     1 True
+SM_Floor_4m                   256     0     1 True
+SM_Pallet                    1062     0     1 True
+SM_Parapet_4m                 308     0     1 True
+SM_Pillar_3m                  698     0     1 True
+SM_Pipe_2m                    506     0     1 True
+SM_Railing_4m                 256     0     1 True
+SM_Rubble_Pile                732     0     1 True
+SM_Sign_Wall                  374     0     1 True
+SM_Stairs_4m                  252     0     1 True
+SM_Vent_Wall                  753     0     1 True
+SM_Wall_Arch_4m               418     0     1 True
+SM_Wall_Corner_4m             252     0     1 True
+SM_Wall_Doorway_4m            300     0     1 True
+SM_Wall_Half_2m               396     0     1 True
+SM_Wall_Straight_4m           310     0     1 True
+SM_Wall_Window_4m             296     0     1 True
+
+== LOD SET (/Game/ModKit/Meshes_LOD) ==
+asset                     lods tris per lod
+SM_Barrel                    4 [1804, 902, 450, 226]
+SM_Ceiling_4m                4 [236, 118, 64, 64]
+SM_Crate_Large               4 [1456, 728, 364, 182]
+SM_Crate_Small               4 [1456, 728, 364, 182]
+SM_Crate_Stack               4 [418, 208, 104, 64]
+SM_Doorframe                 4 [260, 130, 64, 64]
+SM_Floor_4m                  4 [620, 310, 154, 78]
+SM_Pallet                    4 [2124, 1062, 530, 266]
+SM_Parapet_4m                4 [528, 264, 132, 66]
+SM_Pillar_3m                 4 [892, 446, 222, 112]
+SM_Pipe_2m                   4 [1136, 568, 284, 142]
+SM_Railing_4m                4 [1594, 796, 398, 200]
+SM_Rubble_Pile               4 [1212, 606, 302, 152]
+SM_Sign_Wall                 4 [596, 298, 148, 74]
+SM_Stairs_4m                 4 [1140, 570, 284, 142]
+SM_Vent_Wall                 4 [980, 490, 245, 122]
+SM_Wall_Arch_4m              4 [904, 452, 226, 112]
+SM_Wall_Corner_4m            4 [452, 226, 112, 64]
+SM_Wall_Doorway_4m           4 [772, 386, 192, 96]
+SM_Wall_Half_2m              4 [620, 310, 154, 78]
+SM_Wall_Straight_4m          4 [620, 310, 154, 78]
+SM_Wall_Window_4m            4 [816, 408, 204, 102]
+
+== PROBLEMS ==
+ none

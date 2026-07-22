@@ -1,0 +1,11 @@
+# Treat asset binaries as binary so git never tries to diff or merge them.
+*.blend  binary
+*.fbx    binary
+*.glb    binary
+*.png    binary
+
+# Normalise line endings for text.
+*.py     text eol=lf
+*.md     text eol=lf
+*.csv    text eol=lf
+*.txt    text eol=lf

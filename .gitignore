@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+
+# Blender
+*.blend1
+*.blend2
+
+# OS
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Editors
+.vscode/
+.idea/
+
+# Unreal (in case a project is ever nested here)
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+*.sln
