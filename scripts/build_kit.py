@@ -14,13 +14,14 @@ import bmesh
 import bpy
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+import kit_config as cfg
 import modkit_lib as L
 from modkit_lib import M, WALL_H, WALL_T, FLOOR_T
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-RIB = 0.18          # width of the structural rib framing each wall
-RECESS = 0.045      # how deep the panel bays sit
-BAY_INSET = 0.18    # gap between rib frame and bay
+RIB = cfg.RIB_WIDTH
+RECESS = cfg.RECESS_DEPTH
+BAY_INSET = cfg.BAY_INSET
 
 MATS = {}
 STATS = []
@@ -54,8 +55,8 @@ def wall(name, width=M, height=WALL_H, opening=None, mat="M_Concrete"):
                     collection=L.get_collection("Kit"))
 
 
-def wall_arch(name, width=M, height=WALL_H, span=1.80, spring=1.45,
-              mat="M_Concrete"):
+def wall_arch(name, width=M, height=WALL_H, span=cfg.ARCH_SPAN,
+              spring=cfg.ARCH_SPRING, mat="M_Concrete"):
     """Wall with a genuine semicircular arched opening."""
     bm = bmesh.new()
     L.add_box(bm, (0, 0, 0), (width, WALL_T, height))
@@ -87,14 +88,14 @@ def slab(name, size=M, thick=FLOOR_T, top_at_zero=True, tiles=2,
     bm = bmesh.new()
     L.add_box(bm, (0, 0, z0), (size, size, z1))
     step = size / tiles
-    groove = 0.05
+    groove = cfg.GROOVE
     for i in range(tiles):
         for j in range(tiles):
             x0 = i * step + groove
             y0 = j * step + groove
             x1 = (i + 1) * step - groove
             y1 = (j + 1) * step - groove
-            L.carve(bm, (x0, y0, z1 - 0.04), (x1, y1, z1 + 0.01))
+            L.carve(bm, (x0, y0, z1 - cfg.TILE_DEPTH), (x1, y1, z1 + 0.01))
     return L.finish(bm, name, material=MATS[mat],
                     collection=L.get_collection("Kit"))
 
@@ -145,7 +146,8 @@ def railing(name, length=M, height=1.10, posts=5, mat="M_Steel"):
                     collection=L.get_collection("Kit"))
 
 
-def doorframe(name, w=1.20, h=2.20, mat="M_PaintedMetal"):
+def doorframe(name, w=cfg.DOOR_WIDTH, h=cfg.DOOR_HEIGHT,
+              mat="M_PaintedMetal"):
     """Trim that dresses a doorway cut. Origin centred on the opening base."""
     d = WALL_T + 0.06
     j = 0.10
@@ -323,9 +325,14 @@ def define_assets():
         lambda: wall("SM_Wall_Straight_4m"),
         lambda: wall("SM_Wall_Half_2m", width=M / 2),
         lambda: wall("SM_Wall_Doorway_4m",
-                     opening=(M / 2 - 0.60, M / 2 + 0.60, 0.0, 2.20)),
+                     opening=(M / 2 - cfg.DOOR_WIDTH / 2,
+                              M / 2 + cfg.DOOR_WIDTH / 2,
+                              0.0, cfg.DOOR_HEIGHT)),
         lambda: wall("SM_Wall_Window_4m",
-                     opening=(M / 2 - 0.90, M / 2 + 0.90, 1.00, 2.20)),
+                     opening=(M / 2 - cfg.WINDOW_WIDTH / 2,
+                              M / 2 + cfg.WINDOW_WIDTH / 2,
+                              cfg.WINDOW_SILL,
+                              cfg.WINDOW_SILL + cfg.WINDOW_HEIGHT)),
         lambda: wall_arch("SM_Wall_Arch_4m"),
         lambda: wall_corner("SM_Wall_Corner_4m"),
         lambda: slab("SM_Floor_4m", tiles=2),
@@ -350,6 +357,15 @@ def define_assets():
 
 def main():
     global MATS
+    # Fail loudly on impossible parameter combinations rather than emitting
+    # silently broken geometry (e.g. a door taller than the wall).
+    problems = cfg.validate()
+    if problems:
+        for p in problems:
+            print("CONFIG ERROR: %s" % p)
+        raise SystemExit("kit_config.py is inconsistent; aborting build")
+    print("CONFIG\n%s" % cfg.describe())
+
     L.wipe_scene()
     MATS = L.build_materials()
     L.get_collection("Kit")

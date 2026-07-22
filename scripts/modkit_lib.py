@@ -16,18 +16,22 @@ import bpy
 from mathutils import Vector, Matrix
 
 # ---------------------------------------------------------------- constants
-M = 4.0        # module size            (400 uu)
-WALL_H = 3.0   # wall height            (300 uu)
-WALL_T = 0.20  # wall thickness         ( 20 uu)
-FLOOR_T = 0.20 # floor slab thickness   ( 20 uu)
-DOOR_W = 1.20  # door opening width
-DOOR_H = 2.20  # door opening height
-WIN_W = 1.80   # window opening width
-WIN_H = 1.20   # window opening height
-WIN_SILL = 1.00  # window sill height off the floor
+# Every dimension lives in kit_config.py -- do not hard-code sizes here.
+# These are short aliases kept for readability inside the geometry code.
+import kit_config as cfg
 
-BEVEL_W = 0.012      # 1.2 cm -- reads at gameplay distance without bloating silhouette
-BEVEL_SEGS = 2
+M = cfg.MODULE            # module size            (400 uu)
+WALL_H = cfg.WALL_HEIGHT  # wall height            (300 uu)
+WALL_T = cfg.WALL_THICKNESS
+FLOOR_T = cfg.FLOOR_THICKNESS
+DOOR_W = cfg.DOOR_WIDTH
+DOOR_H = cfg.DOOR_HEIGHT
+WIN_W = cfg.WINDOW_WIDTH
+WIN_H = cfg.WINDOW_HEIGHT
+WIN_SILL = cfg.WINDOW_SILL
+
+BEVEL_W = cfg.BEVEL_WIDTH
+BEVEL_SEGS = cfg.BEVEL_SEGMENTS
 SMOOTH_ANGLE = math.radians(40.0)
 
 
@@ -180,14 +184,14 @@ def finish(bm, name, origin=(0, 0, 0), bevel=BEVEL_W, segs=BEVEL_SEGS,
     bev.width = bevel
     bev.segments = segs
     bev.limit_method = 'ANGLE'
-    bev.angle_limit = math.radians(30.0)
+    bev.angle_limit = math.radians(cfg.BEVEL_ANGLE_LIMIT)
     bev.harden_normals = True
     bev.miter_outer = 'MITER_ARC'
     bev.loop_slide = True
 
     wn = obj.modifiers.new("WeightedNormal", 'WEIGHTED_NORMAL')
     wn.keep_sharp = True
-    wn.weight = 60
+    wn.weight = cfg.WEIGHTED_NORMAL_WEIGHT
     return _post(obj, material, uv, collection)
 
 
@@ -214,7 +218,9 @@ def _post(obj, material, uv, collection):
     return obj
 
 
-def smart_unwrap(obj, angle=66.0, margin=0.004):
+def smart_unwrap(obj, angle=None, margin=None):
+    angle = cfg.UV_ANGLE_LIMIT if angle is None else angle
+    margin = cfg.UV_ISLAND_MARGIN if margin is None else margin
     activate(obj)
     bpy.ops.object.mode_set(mode='EDIT')
     bpy.ops.mesh.select_all(action='SELECT')
@@ -262,7 +268,7 @@ def tri_count(obj):
 
 
 # ---------------------------------------------------------------- LOD chain
-LOD_RATIOS = (1.0, 0.55, 0.28, 0.12)
+LOD_RATIOS = cfg.LOD_RATIOS
 
 
 def build_lod_group(obj, ratios=LOD_RATIOS, collection=None):

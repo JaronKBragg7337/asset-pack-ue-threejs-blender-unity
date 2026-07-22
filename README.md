@@ -227,16 +227,25 @@ but `build_kit.py` regenerates this pack byte-for-byte every time.
 
 ## Re-rolling the pack
 
-Everything is driven by constants at the top of `scripts/modkit_lib.py`:
+Every tunable lives in **`scripts/kit_config.py`** — nothing else in the
+codebase contains a hard-coded dimension:
 
 ```python
-M       = 4.0    # module size
-WALL_H  = 3.0    # wall height
-WALL_T  = 0.20   # wall thickness
-BEVEL_W = 0.012  # bevel width -- the single biggest lever on how it reads
+MODULE         = 4.0    # module size
+WALL_HEIGHT    = 3.0
+WALL_THICKNESS = 0.20
+BEVEL_WIDTH    = 0.012  # the single biggest lever on how the pack reads
 ```
 
-Change them and rebuild (Blender 5.x on your PATH):
+There are also presets — `chunky`, `fine`, `compact` — and a `validate()` pass
+that refuses to build impossible combinations (a door taller than the wall, a
+bevel wider than the trim it sits on) rather than emitting broken geometry.
+
+```bash
+python scripts/test_config.py     # checks every preset, no Blender needed
+```
+
+Change the constants and rebuild (Blender 5.x on your PATH):
 
 ```bash
 blender -b --factory-startup --python scripts/build_kit.py
@@ -275,7 +284,11 @@ to `define_assets()`. The library gives you `add_box`, `add_cylinder`, `carve`,
 ```
 .
 ├── source/ModKit.blend           every asset on a showcase grid
+├── AGENTS.md                     conventions for AI coding agents
+├── CONTRIBUTING.md               conventions for humans
 ├── scripts/
+│   ├── kit_config.py             ALL tunables + presets + validation
+│   ├── test_config.py            config sanity checks (no Blender needed)
 │   ├── modkit_lib.py             geometry + export helpers
 │   ├── build_kit.py              asset definitions -- run this to rebuild
 │   ├── render_previews.py        per-asset studio renders
@@ -306,6 +319,12 @@ reported.
 Issues and PRs welcome — especially new kit pieces that respect the 4 m grid.
 Since the whole pack is procedural, a new asset is a single function plus one
 line in `define_assets()`.
+
+* Humans: [`CONTRIBUTING.md`](CONTRIBUTING.md)
+* AI agents (Codex, Claude Code, Cursor): [`AGENTS.md`](AGENTS.md)
+
+Wanted most: roofs and roof trims, damaged/reinforced wall variants, interior
+pieces, more prop states, and small example scenes per engine.
 
 ## License
 
