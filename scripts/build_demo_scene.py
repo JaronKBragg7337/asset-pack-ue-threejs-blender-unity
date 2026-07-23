@@ -151,10 +151,14 @@ def assemble(sources):
     place(sources, "SM_Support_Column_3m", (2.72 * M, 1.74 * M, 0.20),
           zone="Interior")
     place(sources, "SM_Beam_4m", (M, 1.88 * M, H - 0.34), zone="Interior")
-    place(sources, "SM_Doorframe", (0.50 * M - cfg.DOOR_WIDTH / 2,
-                                     -cfg.WALL_THICKNESS, 0.20), zone="Interior")
-    place(sources, "SM_Door_Panel", (0.50 * M, -0.08 * M, 0.20),
-          (0, 0, -28 * DEG), zone="Interior")
+    # Both door assets use a base-centre origin. Centre them in the wall cut,
+    # with the frame straddling the wall depth and the closed leaf seated
+    # inside it, so solid and wireframe views agree exactly.
+    place(sources, "SM_Doorframe",
+          (0.50 * M, cfg.WALL_THICKNESS / 2.0, 0.0), zone="Interior")
+    place(sources, "SM_Door_Panel",
+          (0.50 * M, cfg.WALL_THICKNESS / 2.0 - 0.055 / 2.0, 0.0),
+          zone="Interior")
     place(sources, "SM_Floor_Hatch", (2.12 * M, 1.15 * M, 0.23), zone="Interior")
 
     # Wall-mounted details. Slight offsets use the configured wall thickness.

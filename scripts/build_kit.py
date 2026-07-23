@@ -486,14 +486,18 @@ def pallet(name, w=1.20, d=0.80, mat="M_Wood"):
     board = 0.022
     blk_h = 0.078
     bx, by = w / 2.0, d / 2.0
-    # bottom deckboards
-    for y in (-by, -board * 1.5, by - 0.12):
-        _put(bm, (-bx, y, 0), (bx, y + 0.12, board))
-    # blocks
-    for x in (-bx, -0.06, bx - 0.12):
-        for y in (-by, -0.06, by - 0.12):
+    runner = 0.12
+    runner_x = (-bx, -runner / 2.0, bx - runner)
+    block_y = (-by, -runner / 2.0, by - runner)
+    # Three lower runners cross beneath the five upper deckboards. Keeping
+    # these perpendicular makes the pallet read as one supported assembly.
+    for x in runner_x:
+        _put(bm, (x, -by, 0), (x + runner, by, board))
+    # Nine spacer blocks tie the runners to the deck.
+    for x in runner_x:
+        for y in block_y:
             _put(bm, (x, y, board), (x + 0.12, y + 0.12, board + blk_h))
-    # top deckboards
+    # Five top deckboards span the long axis.
     z = board + blk_h
     n = 5
     for i in range(n):
@@ -588,24 +592,58 @@ def barrel_open(name, radius=0.30, height=0.92, mat="M_RustedIron"):
 
 def barrel_dented(name, radius=0.30, height=0.92, seed=5,
                   mat="M_RustedIron"):
-    """Beaten-up barrel: rings intact, body knocked about. Origin base centre."""
+    """Beaten-up but continuous ribbed barrel. Origin base centre."""
     import random
     rng = random.Random(seed)
     bm = bmesh.new()
-    L.add_cylinder(bm, radius, height, segments=32,
-                   center=(0, 0, height / 2.0))
-    for z in (height * 0.22, height * 0.5, height * 0.78):
-        L.add_cylinder(bm, radius * 1.045, 0.06, segments=32, center=(0, 0, z))
-    L.add_cylinder(bm, radius * 0.55, 0.05, segments=24,
-                   center=(0, 0, height - 0.01))
-    # carve shallow dents by subtracting spheres-ish boxes at odd angles
-    for _ in range(6):
-        ang = rng.uniform(0, 6.2832)
-        z = rng.uniform(height * 0.15, height * 0.85)
-        d = rng.uniform(0.07, 0.13)
-        cx = math.cos(ang) * (radius + d * 0.35)
-        cy = math.sin(ang) * (radius + d * 0.35)
-        L.carve(bm, (cx - d, cy - d, z - d), (cx + d, cy + d, z + d))
+    segments = 32
+    # Extra height loops form three shallow rolling ribs without inserting
+    # solid discs through the body.
+    levels = (
+        (0.00, -0.012), (0.05, 0.000),
+        (0.18, 0.000), (0.20, 0.014), (0.24, 0.014), (0.26, 0.000),
+        (0.47, 0.000), (0.49, 0.014), (0.53, 0.014), (0.55, 0.000),
+        (0.76, 0.000), (0.78, 0.014), (0.82, 0.014), (0.84, 0.000),
+        (height - 0.05, 0.000), (height, -0.012),
+    )
+    dents = []
+    for _ in range(4):
+        dents.append((
+            rng.uniform(0.0, math.tau),
+            rng.uniform(height * 0.18, height * 0.82),
+            rng.uniform(0.035, 0.075),
+            rng.uniform(0.25, 0.42),
+            rng.uniform(0.13, 0.22),
+        ))
+
+    loops = []
+    for z, rib in levels:
+        loop = []
+        for i in range(segments):
+            ang = math.tau * i / segments
+            dent = 0.0
+            for dent_ang, dent_z, depth, angular_span, vertical_span in dents:
+                delta = abs((ang - dent_ang + math.pi) % math.tau - math.pi)
+                angular = max(0.0, 1.0 - delta / angular_span)
+                vertical = max(0.0, 1.0 - abs(z - dent_z) / vertical_span)
+                dent += depth * angular * angular * vertical * vertical
+            # A restrained oval bias keeps the silhouette visibly battered.
+            oval = 1.0 + 0.025 * math.cos(2.0 * ang + 0.7)
+            r = max(radius * 0.72, (radius + rib) * oval - dent)
+            loop.append(bm.verts.new((r * math.cos(ang), r * math.sin(ang), z)))
+        loops.append(loop)
+
+    for lower, upper in zip(loops, loops[1:]):
+        for i in range(segments):
+            j = (i + 1) % segments
+            bm.faces.new((lower[i], lower[j], upper[j], upper[i]))
+    bm.faces.new(tuple(reversed(loops[0])))
+    bm.faces.new(tuple(loops[-1]))
+    bm.normal_update()
+
+    # A small offset bung reads as barrel hardware, not a detached lid.
+    L.add_cylinder(bm, 0.035, 0.014, segments=16,
+                   center=(radius * 0.42, 0, height + 0.007))
     return L.finish(bm, name, material=MATS[mat],
                     collection=L.get_collection("Props"))
 

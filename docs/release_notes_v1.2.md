@@ -18,6 +18,15 @@ built entirely from all 38 ModKit assets. Explore it in the
 or download `ModKit-v1.2-Industrial-Outpost.zip` for Blender, GLB, FBX and the
 complete transform manifest.
 
+### July 23 geometry corrections
+
+- centred and base-aligned the Industrial Outpost doorframe and door leaf with
+  the doorway wall cut
+- rebuilt `SM_Barrel_Dented` as one continuous, deformed ribbed shell instead
+  of boolean-separated barrel slices
+- corrected `SM_Pallet` with three perpendicular lower runners and nine support
+  blocks beneath its five upper deckboards
+
 ## Download
 
 **`ModKit-v1.2.zip`** below contains the complete pack — no clone or build step required.

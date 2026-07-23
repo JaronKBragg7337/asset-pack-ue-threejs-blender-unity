@@ -1087,9 +1087,9 @@
       "name": "SM_Doorframe_01",
       "asset": "SM_Doorframe",
       "location": [
-        1.4,
-        -0.2,
-        0.2
+        2.0,
+        0.1,
+        0.0
       ],
       "rotation_degrees": [
         0.0,
@@ -1107,13 +1107,13 @@
       "asset": "SM_Door_Panel",
       "location": [
         2.0,
-        -0.32,
-        0.2
+        0.0725,
+        0.0
       ],
       "rotation_degrees": [
         0.0,
         0.0,
-        -28.0
+        0.0
       ],
       "scale": [
         1.0,
